@@ -52,3 +52,20 @@ CREATE FUNCTION atualizar_resumos() RETURNS TEXT
         CLOSE curs;
     END //
 DELIMITER ;
+
+-- 4.
+DELIMITER //
+CREATE FUNCTION media_livros_por_editora() RETURNS FLOAT
+    BEGIN
+        DECLARE total_editoras INT;
+        DECLARE total_livros INT;
+        DECLARE media FLOAT;
+        
+        SELECT COUNT(*) INTO total_editoras FROM Editora;
+        SELECT COUNT(*) INTO total_livros FROM Livro;
+        
+        SET media = total_livros / total_editoras;
+        
+        RETURN media;
+    END //
+DELIMITER ;
