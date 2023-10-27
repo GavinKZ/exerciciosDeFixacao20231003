@@ -28,3 +28,27 @@ CREATE FUNCTION listar_livros_por_autor(primeiro_nome VARCHAR(255), ultimo_nome 
         RETURN lista_livros;
     END //
 DELIMITER ;
+
+-- 3.
+DELIMITER //
+CREATE FUNCTION atualizar_resumos() RETURNS TEXT
+    BEGIN
+        DECLARE done INT DEFAULT 0;
+        DECLARE livro_id INT;
+        DECLARE novo_resumo TEXT;
+        DECLARE curs CURSOR FOR SELECT id FROM Livro;
+        DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+        OPEN curs;
+        repeticao: LOOP
+            FETCH curs INTO livro_id;
+            IF done THEN
+                LEAVE repeticao;
+            END IF;
+            SET novo_resumo = CONCAT(resumo, ' Este é um excelente livro!');
+            UPDATE Livro SET resumo = novo_resumo WHERE id = livro_id;
+        END LOOP;
+
+        CLOSE curs;
+    END //
+DELIMITER ;
