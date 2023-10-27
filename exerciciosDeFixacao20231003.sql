@@ -69,3 +69,18 @@ CREATE FUNCTION media_livros_por_editora() RETURNS FLOAT
         RETURN media;
     END //
 DELIMITER ;
+
+-- 5.
+DELIMITER //
+CREATE FUNCTION autores_sem_livros() RETURNS TEXT
+    BEGIN
+        DECLARE lista_autores TEXT;
+        
+        SELECT GROUP_CONCAT(CONCAT(primeiro_nome, ' ', ultimo_nome)) 
+        INTO lista_autores
+        FROM Autor 
+        WHERE id NOT IN (SELECT id_autor FROM Livro_Autor);
+        
+        RETURN lista_autores;
+    END //
+DELIMITER ;
